@@ -80,7 +80,8 @@ class DisplayableAdmin(BaseTranslationModelAdmin):
     list_display = ("title", "status", "admin_link")
     list_display_links = ("title",)
     list_editable = ("status",)
-    list_filter = ("status", "keywords__keyword")
+    # list_filter = ("status", "keywords__keyword")
+    list_filter = ("status",)
     # modeltranslation breaks date hierarchy links, see:
     # https://github.com/deschler/django-modeltranslation/issues/324
     # Once that's resolved we can restore this.

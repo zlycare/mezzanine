@@ -1,3 +1,4 @@
+#coding:utf-8
 from __future__ import unicode_literals
 
 from copy import deepcopy
@@ -13,9 +14,9 @@ from mezzanine.twitter.admin import TweetableAdminMixin
 
 blogpost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 #XXX blogpost_fieldsets[0][1]["fields"].insert(1, "categories")
-blogpost_fieldsets[0][1]["fields"].extend(["source_name"])
+blogpost_fieldsets[0][1]["fields"].extend(["source_name"]) #显示来源字段
 blogpost_fieldsets[0][1]["fields"].extend(["content", "allow_comments"])
-blogpost_fieldsets[0][1]["fields"].extend(["keywords"])
+#XXX blogpost_fieldsets[0][1]["fields"].extend(["keywords"]) #放在上面编辑保存无效，暂时放回MetaData
 blogpost_fieldsets[0][1]["fields"].extend(["categories"])
 
 blogpost_list_display = ["title", "user", "status", "updated", "admin_link"]

@@ -12,9 +12,13 @@ from mezzanine.core.admin import (DisplayableAdmin, OwnableAdmin,
 from mezzanine.twitter.admin import TweetableAdminMixin
 
 blogpost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
-blogpost_fieldsets[0][1]["fields"].insert(1, "categories")
+#XXX blogpost_fieldsets[0][1]["fields"].insert(1, "categories")
+blogpost_fieldsets[0][1]["fields"].extend(["source_name"])
 blogpost_fieldsets[0][1]["fields"].extend(["content", "allow_comments"])
-blogpost_list_display = ["title", "user", "status", "admin_link"]
+blogpost_fieldsets[0][1]["fields"].extend(["keywords"])
+blogpost_fieldsets[0][1]["fields"].extend(["categories"])
+
+blogpost_list_display = ["title", "user", "status", "updated", "admin_link"]
 if settings.BLOG_USE_FEATURED_IMAGE:
     blogpost_fieldsets[0][1]["fields"].insert(-2, "featured_image")
     blogpost_list_display.insert(0, "admin_thumb")

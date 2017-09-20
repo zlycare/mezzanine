@@ -1,3 +1,4 @@
+#coding:utf-8
 from __future__ import unicode_literals
 from future.builtins import int, round
 
@@ -44,7 +45,7 @@ def keywords_for(*args):
     content_type = ContentType.objects.get(app_label=app_label, model=model)
     assigned = AssignedKeyword.objects.filter(content_type=content_type)
     keywords = Keyword.objects.filter(assignments__in=assigned)
-    keywords = keywords.annotate(item_count=Count("assignments"))
+    keywords = keywords.annotate(item_count=Count("assignments")).order_by('item_count').reverse()
     if not keywords:
         return []
     counts = [keyword.item_count for keyword in keywords]
@@ -54,4 +55,6 @@ def keywords_for(*args):
         factor /= (max_count - min_count)
     for kywd in keywords:
         kywd.weight = int(round((kywd.item_count - min_count) * factor)) + 1
-    return keywords
+    #XXX return keywords #OK，我们返回前100个最热的标签／关键词，以解决关键词太多影响页面加载速度的问题：）
+    
+    return keywords[:100]

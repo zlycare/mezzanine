@@ -164,7 +164,7 @@ class DisplayableAdmin(BaseTranslationModelAdmin):
             "fields": ["_meta_title", "slug",
                        ("description", "gen_description"),
                         "keywords", "in_sitemap"],
-            "classes": ("collapse-closed",)
+            "classes": ("collapse-open",)
         }),
     )
 

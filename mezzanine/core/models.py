@@ -1,3 +1,4 @@
+#encoding:utf-8
 from __future__ import unicode_literals
 from future.builtins import str
 from future.utils import with_metaclass
@@ -142,6 +143,8 @@ class MetaData(models.Model):
                     "generated from content. Uncheck if you want to manually "
                     "set a custom description."), default=True)
     keywords = KeywordsField(verbose_name=_("Keywords"))
+    #gen_keywords = models.BooleanField("自动生成关键词", help_text="选中此选项，则算法会根据正文内容自动生成关键词", default=True) #TODO use i18n
+    test_test = 123
 
     class Meta:
         abstract = True
@@ -152,7 +155,29 @@ class MetaData(models.Model):
         """
         if self.gen_description:
             self.description = strip_tags(self.description_from_content())
+
         super(MetaData, self).save(*args, **kwargs)
+        
+        from mezzanine.generic.models import AssignedKeyword
+        if not AssignedKeyword.objects.filter(object_pk=self.id): #autogen keywords only if no keywords - avoid dead recursion
+            self.autogen_keywords()
+            pass
+
+
+
+    def autogen_keywords(self):
+        import jieba.analyse
+        from mezzanine.generic.models import Keyword, AssignedKeyword
+        text = getattr(self, 'content', '')
+        tags = jieba.analyse.extract_tags(text, topK=20, withWeight=True, allowPOS=('ns', 'n', 'vn', 'v'))
+        # convert tags[0] from keyword title to keyword obj
+        for tag in tags:
+            kwtitle = tag[0].encode('utf-8') 
+            kw = Keyword.objects.get_or_create(title=kwtitle)[0]
+            #assigned_keyword = AssignedKeyword(content_object = self, keyword = kw, weight = tag[1])
+            assigned_keyword = AssignedKeyword(content_object = self, keyword = kw, weight = tag[1])
+            assigned_keyword.save()
+            #assert False, (assigned_keyword.id, assigned_keyword.object_pk, assigned_keyword.content_type.id, assigned_keyword.keyword.id, assigned_keyword.weight)
 
     def meta_title(self):
         """

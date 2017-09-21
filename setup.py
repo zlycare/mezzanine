@@ -62,6 +62,7 @@ try:
             "future >= 0.9.0",
             "pillow",
             "chardet",
+            "jieba",
         ],
         entry_points="""
             [console_scripts]

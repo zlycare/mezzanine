@@ -1,3 +1,4 @@
+#encoding:utf-8
 from __future__ import division, unicode_literals
 from future.builtins import str
 
@@ -188,17 +189,18 @@ class KeywordsField(BaseGenericRelation):
         ``Keyword`` instances if their last related ``AssignedKeyword``
         instance is being removed.
         """
-        from mezzanine.generic.models import Keyword
+        from mezzanine.generic.models import Keyword, AssignedKeyword
         related_manager = getattr(instance, self.name)
         # Get a list of Keyword IDs being removed.
         old_ids = [str(a.keyword_id) for a in related_manager.all()]
         new_ids = data.split(",")
         removed_ids = set(old_ids) - set(new_ids)
+        added_ids = set(new_ids) - set(old_ids)
         # Remove current AssignedKeyword instances.
-        related_manager.all().delete()
+        #XXX related_manager.all().delete()
         # Convert the data into AssignedKeyword instances.
         if data:
-            data = [related_manager.create(keyword_id=i) for i in new_ids]
+            data = [related_manager.get_or_create(keyword_id=i)[0] for i in new_ids]
         # Remove keywords that are no longer assigned to anything.
         Keyword.objects.delete_unused(removed_ids)
         super(KeywordsField, self).save_form_data(instance, data)

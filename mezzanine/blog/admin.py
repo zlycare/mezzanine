@@ -47,6 +47,11 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
         OwnableAdmin.save_form(self, request, form, change)
         return DisplayableAdmin.save_form(self, request, form, change)
 
+    def save_related(self, request, form, *args, **kwargs):
+        super(BlogPostAdmin, self).save_related(request, form, *args, **kwargs)
+
+        blogpost = form.instance
+        blogpost.autogen_ifnot_category()
 
 class BlogCategoryAdmin(BaseTranslationModelAdmin):
     """

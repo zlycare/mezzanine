@@ -70,14 +70,17 @@ class BlogPost(Displayable, Ownable, RichText, AdminThumbMixin):
 
     def autogen_ifnot_category(self):
         if not self.categories.all(): # autogen category only if no category for this post
-            #assert False, 'will autogen category'
-            cats = self.suggest_category()
-            cat, score = cats[0]
-            if score > 0: # 有可能没有一个类别吻合，那么就保持没有分类
-                self.categories.add(cat)
-            else:
-                #TODO 也许我们应该在这里记录一些日志，以便区分分类算法出问题VS没有分类吻合两种情况？
-                pass
+            self.autogen_category()
+
+    def autogen_category(self):
+        #assert False, 'will autogen category'
+        cats = self.suggest_category()
+        cat, score = cats[0]
+        if score > 0: # 有可能没有一个类别吻合，那么就保持没有分类
+            self.categories.add(cat)
+        else:
+            #TODO 也许我们应该在这里记录一些日志，以便区分分类算法出问题VS没有分类吻合两种情况？
+            pass
 
     def suggest_category(self):
 

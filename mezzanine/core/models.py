@@ -163,8 +163,6 @@ class MetaData(models.Model):
             self.autogen_keywords()
             pass
 
-
-
     def autogen_keywords(self):
         import jieba.analyse
         from mezzanine.generic.models import Keyword, AssignedKeyword
@@ -174,10 +172,8 @@ class MetaData(models.Model):
         for tag in tags:
             kwtitle = tag[0].encode('utf-8') 
             kw = Keyword.objects.get_or_create(title=kwtitle)[0]
-            #assigned_keyword = AssignedKeyword(content_object = self, keyword = kw, weight = tag[1])
             assigned_keyword = AssignedKeyword(content_object = self, keyword = kw, weight = tag[1])
             assigned_keyword.save()
-            #assert False, (assigned_keyword.id, assigned_keyword.object_pk, assigned_keyword.content_type.id, assigned_keyword.keyword.id, assigned_keyword.weight)
 
     def meta_title(self):
         """

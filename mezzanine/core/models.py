@@ -94,9 +94,14 @@ class Slugged(SiteRelated):
         """
         If no slug is provided, generates one before saving.
         """
-        if not self.slug:
-            self.slug = self.generate_unique_slug()
+        #if not self.slug:
+        #    self.slug = self.generate_unique_slug()
         super(Slugged, self).save(*args, **kwargs)
+
+        # after saving, we will have id, use id for slug
+        if not self.slug:
+            self.slug = self.id
+            self.save()
 
     def generate_unique_slug(self):
         """

@@ -323,7 +323,7 @@ class OwnableAdmin(admin.ModelAdmin):
         models_all_editable = settings.OWNABLE_MODELS_ALL_EDITABLE
         models_all_editable = [m.lower() for m in models_all_editable]
         qs = super(OwnableAdmin, self).get_queryset(request)
-        if request.user.is_superuser or model_name in models_all_editable:
+        if request.user.is_superuser or model_name in models_all_editable or request.user.has_perm('blog.view_blogpost_list'):
             return qs
         return qs.filter(user__id=request.user.id)
 

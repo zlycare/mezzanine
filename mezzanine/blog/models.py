@@ -37,6 +37,9 @@ class BlogPost(Displayable, Ownable, RichText, AdminThumbMixin):
         verbose_name = _("Blog post")
         verbose_name_plural = _("Blog posts")
         ordering = ("-publish_date",)
+        permissions = (
+            ("view_blogpost_list", "Can view blogpost list"),
+        )
 
     def get_absolute_url(self):
         """

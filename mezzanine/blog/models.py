@@ -18,6 +18,9 @@ class BlogPost(Displayable, Ownable, RichText, AdminThumbMixin):
     A blog post.
     """
 
+    review_status = models.IntegerField("审核状态",
+            choices=( (0, "未审核"), (1, "已审核") ), default = 0) #TODO i18n
+    
     categories = models.ManyToManyField("BlogCategory",
                                         verbose_name=_("Categories"),
                                         blank=True, related_name="blogposts")

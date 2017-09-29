@@ -184,7 +184,7 @@ def displayable_links_js(request):
     # For each item's title, we use its model's verbose_name, but in the
     # case of Page subclasses, we just use "Page", and then sort the items
     # by whether they're a Page subclass or not, then by their URL.
-    for url, obj in Displayable.objects.url_map(for_user=request.user).items():
+    for url, obj in Displayable.objects.url_map(for_user=request.user).items()[:10]:
         title = getattr(obj, "titles", obj.title)
         real = hasattr(obj, "id")
         page = is_page(obj)

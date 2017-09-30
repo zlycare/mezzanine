@@ -5,6 +5,7 @@
 # Translators:
 # ufoym <user@ufoym.com>, 2013
 # ufoym <user@ufoym.com>, 2013
+# hmisty <hmisty@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Mezzanine\n"
@@ -21,15 +22,15 @@ msgstr ""
 
 #: admin.py:20
 msgid "Other posts"
-msgstr ""
+msgstr "其他文章"
 
 #: defaults.py:21
 msgid "Enable featured images in blog posts"
-msgstr ""
+msgstr "允许在文章中使用特色图片，即每页有一个不同的主题图片"
 
 #: defaults.py:36
 msgid "Blog post URL date format"
-msgstr ""
+msgstr "博客 URL 中的日期格式"
 
 #: defaults.py:37
 msgid ""
@@ -40,36 +41,39 @@ msgid ""
 "means the URLs will only use the slug, and not contain any portion of the "
 "date at all."
 msgstr ""
+"``year``, ``month``, 或者 ``day``，用来控制基于时间粒度的博客文章的URL地址。"
+"例如，字符串``year`` 会定义URL为/blog/yyyy/slug/, ``day`` 则会定义URL为/"
+"blog/yyyy/mm/dd/slug/.空字符串表示URLs中只会使用slug,而不会使用日期标记。"
 
 #: defaults.py:49
 msgid "Blog posts per page"
-msgstr ""
+msgstr "每页文章条数"
 
 #: defaults.py:50
 msgid "Number of blog posts shown on a blog listing page."
-msgstr ""
+msgstr "在文章列表中显示的条数"
 
 #: defaults.py:57
 msgid "Blog posts RSS limit"
-msgstr ""
+msgstr "RSS中博客文章数的限制"
 
 #: defaults.py:58
 msgid ""
 "Number of most recent blog posts shown in the RSS feed. Set to ``None`` to "
 "display all blog posts in the RSS feed."
-msgstr ""
+msgstr "显示在RSS中最近博客文章的数量，``None``表示在RSS中显示全部。"
 
 #: defaults.py:66
 msgid "Slug of the page object for the blog."
-msgstr ""
+msgstr "文章中页面的英文短缩写(Slug)."
 
 #: models.py:17 templates/blog/includes/filter_panel.html:35
 msgid "Categories"
-msgstr ""
+msgstr "分类"
 
 #: models.py:19
 msgid "Allow comments"
-msgstr ""
+msgstr "允许评论"
 
 #: models.py:21 templates/blog/blog_post_detail.html:43
 #: templates/blog/blog_post_list.html:129
@@ -82,31 +86,31 @@ msgstr "评分"
 
 #: models.py:23
 msgid "Featured Image"
-msgstr ""
+msgstr "主题图片"
 
 #: models.py:27 templates/blog/blog_post_detail.html:113
 msgid "Related posts"
-msgstr ""
+msgstr "相关文章"
 
 #: models.py:32
 msgid "Blog post"
-msgstr "博文"
+msgstr "文章"
 
 #: models.py:33
 msgid "Blog posts"
-msgstr "博文"
+msgstr "文章"
 
 #: models.py:93
 msgid "Blog Category"
-msgstr "博客分类"
+msgstr "文章分类"
 
 #: models.py:94
 msgid "Blog Categories"
-msgstr "博客分类"
+msgstr "文章分类"
 
 #: templates/admin/includes/quick_blog.html:18
 msgid "Quick Blog"
-msgstr "快速博文"
+msgstr "快速发文章"
 
 #: templates/admin/includes/quick_blog.html:27
 msgid "Save Draft"
@@ -121,14 +125,14 @@ msgstr "作者"
 #: templates/blog/blog_post_list.html:95
 #, python-format
 msgid "%(sometime)s ago"
-msgstr ""
+msgstr "%(sometime)s 以前"
 
 #: templates/blog/blog_post_detail.html:46
 #: templates/blog/blog_post_list.html:133
 #, python-format
 msgid "%(comments_count)s comment"
 msgid_plural "%(comments_count)s comments"
-msgstr[0] ""
+msgstr[0] "%(comments_count)s 条评论"
 
 #: templates/blog/blog_post_detail.html:74
 #: templates/blog/blog_post_list.html:116
@@ -138,78 +142,79 @@ msgstr "标签"
 
 #: templates/blog/blog_post_detail.html:87
 msgid "Share on Twitter"
-msgstr ""
+msgstr "分享到Twitter"
 
 #: templates/blog/blog_post_detail.html:88
 msgid "Share on Facebook"
-msgstr ""
+msgstr "分享到Facebook"
 
 #: templates/blog/blog_post_list.html:4 templates/blog/blog_post_list.html:22
 msgid "Blog"
-msgstr ""
+msgstr "文章"
 
 #: templates/blog/blog_post_list.html:31
 msgid "Tag:"
-msgstr ""
+msgstr "标签："
 
 #: templates/blog/blog_post_list.html:33
 msgid "Category:"
-msgstr ""
+msgstr "分类："
 
 #: templates/blog/blog_post_list.html:37
 msgid "Author:"
-msgstr ""
+msgstr "作者："
 
+# 显示本标签的文章？
 #: templates/blog/blog_post_list.html:50
 msgid "Viewing posts tagged"
-msgstr ""
+msgstr "显示被标签的文章"
 
 #: templates/blog/blog_post_list.html:52
 msgid "Viewing posts for the category"
-msgstr ""
+msgstr "显示本类文章"
 
 #: templates/blog/blog_post_list.html:54
 msgid "Viewing posts from"
-msgstr ""
+msgstr "显示时期的文章"
 
 #: templates/blog/blog_post_list.html:57
 msgid "Viewing posts by"
-msgstr ""
+msgstr "显示作者的文章"
 
 #: templates/blog/blog_post_list.html:89
 msgid "in"
-msgstr ""
+msgstr "在"
 
 #: templates/blog/blog_post_list.html:124
 msgid "read more"
-msgstr ""
+msgstr "更多"
 
 #: templates/blog/includes/filter_panel.html:6
 msgid "Recent Posts"
-msgstr ""
+msgstr "近期发布"
 
 #: templates/blog/includes/filter_panel.html:19
 msgid "Archive"
-msgstr ""
+msgstr "按期整理"
 
 #: templates/blog/includes/filter_panel.html:64
 msgid "Authors"
-msgstr ""
+msgstr "作者"
 
 #: templates/blog/includes/filter_panel.html:76
 msgid "Feeds"
-msgstr ""
+msgstr "订阅"
 
 #: templates/blog/includes/filter_panel.html:78
 #: templates/blog/includes/filter_panel.html:82
 #: templates/blog/includes/filter_panel.html:86
 #: templates/blog/includes/filter_panel.html:90
 msgid "RSS"
-msgstr ""
+msgstr "RSS"
 
 #: templates/blog/includes/filter_panel.html:79
 #: templates/blog/includes/filter_panel.html:83
 #: templates/blog/includes/filter_panel.html:87
 #: templates/blog/includes/filter_panel.html:91
 msgid "Atom"
-msgstr ""
+msgstr "Atom"

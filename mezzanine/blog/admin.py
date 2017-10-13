@@ -46,6 +46,7 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
         Super class ordering is important here - user must get saved first.
         """
         OwnableAdmin.save_form(self, request, form, change)
+        self.save_reviewer_form(form, request)
         return DisplayableAdmin.save_form(self, request, form, change)
 
     def save_related(self, request, form, *args, **kwargs):
@@ -53,6 +54,16 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
 
         blogpost = form.instance
         blogpost.autogen_ifnot_category()
+
+    def save_reviewer_form(self, form, request):
+        obj = form.save(commit=False)
+        review_ok = 1
+        from django.utils import timezone
+        if obj.review_status == review_ok and obj.review_user is None:
+            obj.review_user = request.user
+            obj.reviewed = timezone.now()
+
+
 
 class BlogCategoryAdmin(BaseTranslationModelAdmin):
     """

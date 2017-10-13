@@ -12,6 +12,7 @@ from mezzanine.core.models import Displayable, Ownable, RichText, Slugged
 from mezzanine.generic.fields import CommentsField, RatingField
 from mezzanine.utils.models import AdminThumbMixin, upload_to
 
+from django.contrib.auth.models import User
 
 class BlogPost(Displayable, Ownable, RichText, AdminThumbMixin):
     """
@@ -20,7 +21,9 @@ class BlogPost(Displayable, Ownable, RichText, AdminThumbMixin):
 
     review_status = models.IntegerField("审核状态",
             choices=( (0, "未审核"), (1, "已审核") ), default = 0) #TODO i18n
-    
+    review_user = models.ForeignKey(User, related_name='blogpost', null=True)
+    reviewed = models.DateTimeField(_("reviewed"), null=True)
+
     categories = models.ManyToManyField("BlogCategory",
                                         verbose_name=_("Categories"),
                                         blank=True, related_name="blogposts")

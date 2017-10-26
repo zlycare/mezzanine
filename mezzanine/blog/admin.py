@@ -28,7 +28,7 @@ blogpost_fieldsets = list(blogpost_fieldsets)
 #XXX blogpost_fieldsets.insert(1, (_("Other posts"), {
 #XXX     "classes": ("collapse-closed",),
 #XXX     "fields": ("related_posts",)}))
-blogpost_list_filter = deepcopy(DisplayableAdmin.list_filter) + ("user","categories","review_status",)
+blogpost_list_filter = deepcopy(DisplayableAdmin.list_filter) + ("user","categories","review_status","source_name")
 
 
 class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):

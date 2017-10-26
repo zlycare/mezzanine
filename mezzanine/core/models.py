@@ -171,8 +171,16 @@ class MetaData(models.Model):
     def autogen_keywords(self):
         import jieba.analyse
         from mezzanine.generic.models import Keyword, AssignedKeyword
+        # jieba默认的词库根地址是mezzanine生成的应用，如/cms
+        try:
+            jieba.load_userdict('./static/jieba_dict/pass_words.txt')
+            jieba.analyse.set_stop_words('./static/jieba_dict/stop_words.txt')
+            print '=========已使用自定义词库========='
+        except:
+            print '？？？？？未找到自定义词库？？？？？'
+
         text = getattr(self, 'content', '')
-        tags = jieba.analyse.extract_tags(text, topK=20, withWeight=True, allowPOS=('ns', 'n', 'vn', 'v'))
+        tags = jieba.analyse.extract_tags(text, topK=20, withWeight=True, allowPOS=('ns', 'n', 'vn'))
         # convert tags[0] from keyword title to keyword obj
         for tag in tags:
             kwtitle = tag[0].encode('utf-8') 
@@ -239,7 +247,7 @@ class TimeStamped(models.Model):
     def save(self, *args, **kwargs):
         _now = now()
         self.updated = _now
-        if not self.id:
+        if not self.id and not self.created:
             self.created = _now
         super(TimeStamped, self).save(*args, **kwargs)
 

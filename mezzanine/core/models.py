@@ -175,9 +175,9 @@ class MetaData(models.Model):
         try:
             jieba.load_userdict('./static/jieba_dict/pass_words.txt')
             jieba.analyse.set_stop_words('./static/jieba_dict/stop_words.txt')
-            print '=========已使用自定义词库========='
+            print '========= third party dictionaries loaded ========='
         except:
-            print '？？？？？未找到自定义词库？？？？？'
+            print 'xxxxxxxxx failed to load third party dictornaries xxxxxxxx'
 
         text = getattr(self, 'content', '')
         tags = jieba.analyse.extract_tags(text, topK=20, withWeight=True, allowPOS=('ns', 'n', 'vn'))

@@ -149,7 +149,6 @@ class MetaData(models.Model):
                     "set a custom description."), default=True)
     keywords = KeywordsField(verbose_name=_("Keywords"))
     #gen_keywords = models.BooleanField("自动生成关键词", help_text="选中此选项，则算法会根据正文内容自动生成关键词", default=True) #TODO use i18n
-    test_test = 123
 
     class Meta:
         abstract = True

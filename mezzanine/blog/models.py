@@ -24,6 +24,9 @@ class BlogPost(Displayable, Ownable, RichText, AdminThumbMixin):
     review_user = models.ForeignKey(User, related_name='blogpost', null=True)
     reviewed = models.DateTimeField(_("reviewed"), null=True)
 
+    sticky_status = models.IntegerField("置顶状态",
+                                        choices=((0, "未置顶"), (1, "已置顶")), default=0)  # TODO i18n
+
     categories = models.ManyToManyField("BlogCategory",
                                         verbose_name=_("Categories"),
                                         blank=True, related_name="blogposts")

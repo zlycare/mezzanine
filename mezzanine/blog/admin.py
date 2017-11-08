@@ -15,12 +15,13 @@ from mezzanine.twitter.admin import TweetableAdminMixin
 blogpost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 #XXX blogpost_fieldsets[0][1]["fields"].insert(1, "categories")
 blogpost_fieldsets[0][1]["fields"].extend(["review_status"]) #显示审核状态
+blogpost_fieldsets[0][1]["fields"].extend(["sticky_status"]) #显示置顶状态
 blogpost_fieldsets[0][1]["fields"].extend(["source_name"]) #显示来源字段
 blogpost_fieldsets[0][1]["fields"].extend(["content", "allow_comments"])
 #XXX blogpost_fieldsets[0][1]["fields"].extend(["keywords"]) #放在上面编辑保存无效，暂时放回MetaData
 blogpost_fieldsets[0][1]["fields"].extend(["categories"])
 
-blogpost_list_display = ["title", "user", "status", "review_status", "admin_link"]
+blogpost_list_display = ["title", "user", "status", "review_status", "sticky_status", "admin_link"]
 if settings.BLOG_USE_FEATURED_IMAGE:
     blogpost_fieldsets[0][1]["fields"].insert(-2, "featured_image")
     blogpost_list_display.insert(0, "admin_thumb")
@@ -28,7 +29,7 @@ blogpost_fieldsets = list(blogpost_fieldsets)
 #XXX blogpost_fieldsets.insert(1, (_("Other posts"), {
 #XXX     "classes": ("collapse-closed",),
 #XXX     "fields": ("related_posts",)}))
-blogpost_list_filter = deepcopy(DisplayableAdmin.list_filter) + ("user","categories","review_status","source_name")
+blogpost_list_filter = deepcopy(DisplayableAdmin.list_filter) + ("user","categories","review_status","sticky_status","source_name")
 
 
 class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):

@@ -180,11 +180,14 @@ class MetaData(models.Model):
 
         text = getattr(self, 'content', '')
         tags = jieba.analyse.extract_tags(text, topK=20, withWeight=True, allowPOS=('ns', 'n', 'vn'))
+        weight_sum = 0
+        for tag in tags:
+            weight_sum += tag[1]
         # convert tags[0] from keyword title to keyword obj
         for tag in tags:
             kwtitle = tag[0].encode('utf-8') 
             kw = Keyword.objects.get_or_create(title=kwtitle)[0]
-            assigned_keyword = AssignedKeyword(content_object = self, keyword = kw, weight = tag[1])
+            assigned_keyword = AssignedKeyword(content_object = self, keyword = kw, weight = tag[1]/weight_sum)
             assigned_keyword.save()
 
     def meta_title(self):

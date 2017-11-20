@@ -3,8 +3,8 @@
 from bson_rpc.client import connect
 
 
-# conn = connect('10.80.236.161','10.30.49.170',8181)
-conn = connect('127.0.0.1',8181)
+conn = connect('10.80.236.161','10.30.49.170',8181)
+# conn = connect('127.0.0.1',8181)
 conn.use_service(['gen_keywords', 'gen_category', 'gen_search_index']);
 
 

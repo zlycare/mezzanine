@@ -231,13 +231,14 @@ class KeywordsField(BaseGenericRelation):
         """
         Stores the keywords as a single string for searching.
         """
-        assigned = related_manager.select_related("keyword")
-        keywords = " ".join([str(a.keyword) for a in assigned][:50])
-        string_field_name = list(self.fields.keys())[0] % \
-                            self.related_field_name
-        if getattr(instance, string_field_name) != keywords:
-            setattr(instance, string_field_name, keywords)
-            instance.save()
+        pass
+        # assigned = related_manager.select_related("keyword")
+        # keywords = " ".join([str(a.keyword) for a in assigned][:50])
+        # string_field_name = list(self.fields.keys())[0] % \
+        #                     self.related_field_name
+        # if getattr(instance, string_field_name) != keywords:
+        #     setattr(instance, string_field_name, keywords)
+        #     instance.save()
 
 
 class RatingField(BaseGenericRelation):

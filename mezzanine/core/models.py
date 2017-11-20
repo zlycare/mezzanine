@@ -31,6 +31,7 @@ from mezzanine.utils.sites import current_site_id, current_request
 from mezzanine.utils.urls import admin_url, slugify, unique_slug
 
 
+
 user_model_name = get_user_model_name()
 
 
@@ -161,34 +162,8 @@ class MetaData(models.Model):
             self.description = strip_tags(self.description_from_content())
 
         super(MetaData, self).save(*args, **kwargs)
-        
-        from mezzanine.generic.models import AssignedKeyword
-        if not AssignedKeyword.objects.filter(object_pk=self.id): #autogen keywords only if no keywords - avoid dead recursion
-            self.autogen_keywords()
-            pass
 
-    def autogen_keywords(self):
-        import jieba.analyse
-        from mezzanine.generic.models import Keyword, AssignedKeyword
-        # jieba默认的词库根地址是mezzanine生成的应用，如/cms
-        try:
-            jieba.load_userdict('./static/jieba_dict/pass_words.txt')
-            jieba.analyse.set_stop_words('./static/jieba_dict/stop_words.txt')
-            print '========= third party dictionaries loaded ========='
-        except:
-            print 'xxxxxxxxx failed to load third party dictornaries xxxxxxxx'
 
-        text = getattr(self, 'content', '')
-        tags = jieba.analyse.extract_tags(text, topK=20, withWeight=True, allowPOS=('ns', 'n', 'vn'))
-        weight_sum = 0
-        for tag in tags:
-            weight_sum += tag[1]
-        # convert tags[0] from keyword title to keyword obj
-        for tag in tags:
-            kwtitle = tag[0].encode('utf-8') 
-            kw = Keyword.objects.get_or_create(title=kwtitle)[0]
-            assigned_keyword = AssignedKeyword(content_object = self, keyword = kw, weight = tag[1]/weight_sum)
-            assigned_keyword.save()
 
     def meta_title(self):
         """

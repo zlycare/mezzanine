@@ -53,9 +53,6 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
     def save_related(self, request, form, *args, **kwargs):
         super(BlogPostAdmin, self).save_related(request, form, *args, **kwargs)
 
-        blogpost = form.instance
-        blogpost.autogen_ifnot_category()
-
     def save_reviewer_form(self, form, request):
         obj = form.save(commit=False)
         review_ok = 1
@@ -64,7 +61,17 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
             obj.review_user = request.user
             obj.reviewed = timezone.now()
 
-
+    # 使用Django的信号机制，在文章保存后生成关键词和分类
+    from django.db.models.signals import post_save
+    from django.dispatch import receiver
+    @receiver(post_save, sender=BlogPost)
+    def blogpost_after(sender, created, instance, **kwargs):
+        blogpost = instance
+        if (blogpost.id):
+            from mezzanine.blog import api_zmq
+            # api_zmq.auto_gen_keywords_message(blogpost.id, blogpost.content)
+            api_zmq.auto_gen_category_message(blogpost.id, blogpost.content)
+            api_zmq.auto_gen_search_index_message(blogpost.id, blogpost.content)
 
 class BlogCategoryAdmin(BaseTranslationModelAdmin):
     """

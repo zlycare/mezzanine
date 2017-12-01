@@ -110,8 +110,9 @@ def hotkeywords_for(*args):
 
     content_type = ContentType.objects.get(app_label=app_label, model=model)
     assigned = AssignedKeyword.objects.filter(content_type=content_type)
-    keywords = Keyword.objects.filter(assignments__in=assigned)
-    keywords = keywords.annotate(item_count=Count("assignments")).order_by('item_count').reverse()
+    # keywords = Keyword.objects.filter(assignments__in=assigned)
+    # keywords = keywords.annotate(item_count=Count("assignments")).order_by('item_count').reverse()
+    keywords = []
     if not keywords:
         return []
     counts = [keyword.item_count for keyword in keywords]

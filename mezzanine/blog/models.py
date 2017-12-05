@@ -26,6 +26,8 @@ class BlogPost(Displayable, Ownable, RichText, AdminThumbMixin):
 
     sticky_status = models.IntegerField("置顶状态",
                                         choices=((0, "未置顶"), (1, "已置顶")), default=0)  # TODO i18n
+    view_count_v = models.IntegerField("虚拟阅读数",default=0,blank=True)
+    like_count_v = models.IntegerField("虚拟点赞数",default=0,blank=True)
 
     categories = models.ManyToManyField("BlogCategory",
                                         verbose_name=_("Categories"),

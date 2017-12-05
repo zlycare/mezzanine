@@ -20,6 +20,8 @@ blogpost_fieldsets[0][1]["fields"].extend(["source_name"]) #显示来源字段
 blogpost_fieldsets[0][1]["fields"].extend(["content", "allow_comments"])
 #XXX blogpost_fieldsets[0][1]["fields"].extend(["keywords"]) #放在上面编辑保存无效，暂时放回MetaData
 blogpost_fieldsets[0][1]["fields"].extend(["categories"])
+blogpost_fieldsets[0][1]["fields"].extend(["view_count_v"]) #虚拟阅读数
+blogpost_fieldsets[0][1]["fields"].extend(["like_count_v"]) #虚拟点赞数
 
 blogpost_list_display = ["title", "user", "status", "review_status", "sticky_status", "admin_link"]
 if settings.BLOG_USE_FEATURED_IMAGE:

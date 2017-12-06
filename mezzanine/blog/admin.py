@@ -42,6 +42,14 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
     list_filter = blogpost_list_filter
     filter_horizontal = ("categories","content_categories","form_categories" )
 
+    addon_fieldsets = [(_("运营调整"), {
+        "fields": [("review_status", "sticky_status"),
+                   ("view_count_v", "like_count_v"),
+                   "grade", "content_categories", "form_categories"],
+        "classes": ("collapse-open",)
+    })]
+    manage_fieldsets = fieldsets + addon_fieldsets
+
     def save_form(self, request, form, change):
         """
         Super class ordering is important here - user must get saved first.
@@ -53,13 +61,9 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
     def get_form(self, request, obj=None, *args, **kwargs):
         if obj:
             if request.user.has_perm('blog.edit_operational_fields'):
-                addon_fieldsets = [(_("运营调整"), {
-                    "fields": [("review_status", "sticky_status"),
-                               ("view_count_v", "like_count_v"),
-                               "grade", "content_categories", "form_categories"],
-                    "classes": ("collapse-open",)
-                })]
-                self.fieldsets = self.fieldsets + addon_fieldsets
+
+                self.fieldsets = self.manage_fieldsets
+                self.readonly_fields = ()
             else:
                 self.readonly_fields = ('_meta_title', 'slug', 'publish_date','expiry_date')
         else:

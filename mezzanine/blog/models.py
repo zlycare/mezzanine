@@ -28,9 +28,16 @@ class BlogPost(Displayable, Ownable, RichText, AdminThumbMixin):
                                         choices=((0, "未置顶"), (1, "已置顶")), default=0)  # TODO i18n
     view_count_v = models.IntegerField("虚拟阅读数",default=0,blank=True)
     like_count_v = models.IntegerField("虚拟点赞数",default=0,blank=True)
+    grade = models.IntegerField("文章评级",choices=( (0, "普通"), (10, "良好"), (20, "高质量")), default = 0)
 
     categories = models.ManyToManyField("BlogCategory",
                                         verbose_name=_("Categories"),
+                                        blank=True, related_name="blogposts")
+    content_categories = models.ManyToManyField("BlogContentCategory",
+                                        verbose_name=_("内容管理分类"),
+                                        blank=True, related_name="blogposts")
+    form_categories = models.ManyToManyField("BlogFormCategory",
+                                        verbose_name=_("形式管理分类"),
                                         blank=True, related_name="blogposts")
     allow_comments = models.BooleanField(verbose_name=_("Allow comments"),
                                          default=True)
@@ -50,6 +57,7 @@ class BlogPost(Displayable, Ownable, RichText, AdminThumbMixin):
         ordering = ("-publish_date",)
         permissions = (
             ("view_blogpost_list", "Can view blogpost list"),
+            ("edit_operational_fields","can edit operational_fields"),
         )
 
     def get_absolute_url(self):
@@ -98,3 +106,22 @@ class BlogCategory(Slugged):
     @models.permalink
     def get_absolute_url(self):
         return ("blog_post_list_category", (), {"category": self.slug})
+
+
+class BlogContentCategory(Slugged):
+    """
+    cms管理使用的内容分类
+    """
+    class Meta:
+        verbose_name = _("内容管理分类")
+        verbose_name_plural = _("内容管理分类")
+        ordering = ("title",)
+
+class BlogFormCategory(Slugged):
+    """
+    cms管理使用的形式分类
+    """
+    class Meta:
+        verbose_name = _("形式管理分类")
+        verbose_name_plural = _("形式管理分类")
+        ordering = ("title",)

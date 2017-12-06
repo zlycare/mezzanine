@@ -14,14 +14,12 @@ from mezzanine.twitter.admin import TweetableAdminMixin
 
 blogpost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 #XXX blogpost_fieldsets[0][1]["fields"].insert(1, "categories")
-blogpost_fieldsets[0][1]["fields"].extend(["review_status"]) #显示审核状态
-blogpost_fieldsets[0][1]["fields"].extend(["sticky_status"]) #显示置顶状态
+# 参考core/admin.py中DispalyableAdmin的fieldsets
 blogpost_fieldsets[0][1]["fields"].extend(["source_name"]) #显示来源字段
 blogpost_fieldsets[0][1]["fields"].extend(["content", "allow_comments"])
 #XXX blogpost_fieldsets[0][1]["fields"].extend(["keywords"]) #放在上面编辑保存无效，暂时放回MetaData
 blogpost_fieldsets[0][1]["fields"].extend(["categories"])
-blogpost_fieldsets[0][1]["fields"].extend(["view_count_v"]) #虚拟阅读数
-blogpost_fieldsets[0][1]["fields"].extend(["like_count_v"]) #虚拟点赞数
+
 
 blogpost_list_display = ["title", "user", "status", "review_status", "sticky_status", "admin_link"]
 if settings.BLOG_USE_FEATURED_IMAGE:
@@ -42,7 +40,7 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
     fieldsets = blogpost_fieldsets
     list_display = blogpost_list_display
     list_filter = blogpost_list_filter
-    filter_horizontal = ("categories", "related_posts",)
+    filter_horizontal = ("categories","content_categories","form_categories" )
 
     def save_form(self, request, form, change):
         """
@@ -51,6 +49,24 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
         OwnableAdmin.save_form(self, request, form, change)
         self.save_reviewer_form(form, request)
         return DisplayableAdmin.save_form(self, request, form, change)
+
+    def get_form(self, request, obj=None, *args, **kwargs):
+        if obj:
+            if request.user.has_perm('blog.edit_operational_fields'):
+                addon_fieldsets = [(_("运营调整"), {
+                    "fields": [("review_status", "sticky_status"),
+                               ("view_count_v", "like_count_v"),
+                               "grade", "content_categories", "form_categories"],
+                    "classes": ("collapse-open",)
+                })]
+                self.fieldsets = self.fieldsets + addon_fieldsets
+            else:
+                self.readonly_fields = ('_meta_title', 'slug', 'publish_date','expiry_date')
+        else:
+            self.fieldsets = ()
+        form = super(BlogPostAdmin, self).get_form(request, *args, **kwargs)
+        form.request = request
+        return form
 
     def save_related(self, request, form, *args, **kwargs):
         super(BlogPostAdmin, self).save_related(request, form, *args, **kwargs)
@@ -62,6 +78,7 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
         if obj.review_status == review_ok and obj.review_user is None:
             obj.review_user = request.user
             obj.reviewed = timezone.now()
+
 
     # 使用Django的信号机制，在文章保存后生成关键词和分类
     from django.db.models.signals import post_save

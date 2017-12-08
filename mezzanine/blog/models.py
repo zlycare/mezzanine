@@ -39,6 +39,10 @@ class BlogPost(Displayable, Ownable, RichText, AdminThumbMixin):
     form_categories = models.ManyToManyField("BlogFormCategory",
                                         verbose_name=_("形式管理分类"),
                                         blank=True, related_name="blogposts")
+
+    areas = models.ManyToManyField("Area",
+                                        verbose_name=_("推广地区"),
+                                        blank=True, related_name="blogposts",help_text="<strong>不选则默认全国推广,选择后只推广所选地区，全省推广可只选择‘省’<strong/><br/><br/>")
     allow_comments = models.BooleanField(verbose_name=_("Allow comments"),
                                          default=True)
     comments = CommentsField(verbose_name=_("Comments"))
@@ -125,3 +129,21 @@ class BlogFormCategory(Slugged):
         verbose_name = _("形式管理分类")
         verbose_name_plural = _("形式管理分类")
         ordering = ("title",)
+
+
+
+from mptt.models import MPTTModel, TreeForeignKey
+class Area(MPTTModel):
+    title = models.CharField(max_length=50, null=False, blank=True)
+    name = models.CharField(max_length=50, unique=True)
+    parent = TreeForeignKey('self', verbose_name=u'上级区域', null=True, blank=True, related_name='children')
+
+    class MPTTMeta:
+        order_insertion_by = ['title']
+
+    class Meta:
+        verbose_name = verbose_name_plural = (u'省/市/地区(县)')
+
+    def __unicode__(self):
+        return self.title
+

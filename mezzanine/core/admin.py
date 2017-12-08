@@ -168,6 +168,10 @@ class DisplayableAdmin(BaseTranslationModelAdmin):
                        "keywords", "in_sitemap"],
             "classes": ("collapse-open",)
         }),
+        (_("推广相关"), {
+            "fields": ["areas"],
+            "classes": ("collapse-closed",)
+        }),
     )
 
     form = DisplayableAdminForm

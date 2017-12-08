@@ -6,7 +6,7 @@ from copy import deepcopy
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from mezzanine.blog.models import BlogPost, BlogCategory
+from mezzanine.blog.models import BlogPost, BlogCategory, Area
 from mezzanine.conf import settings
 from mezzanine.core.admin import (DisplayableAdmin, OwnableAdmin,
                                   BaseTranslationModelAdmin)
@@ -40,7 +40,7 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
     fieldsets = blogpost_fieldsets
     list_display = blogpost_list_display
     list_filter = blogpost_list_filter
-    filter_horizontal = ("categories","content_categories","form_categories" )
+    filter_horizontal = ("categories", "areas", "content_categories","form_categories" )
 
     addon_fieldsets = [(_("运营调整"), {
         "fields": [("review_status", "sticky_status"),
@@ -114,5 +114,10 @@ class BlogCategoryAdmin(BaseTranslationModelAdmin):
         return False
 
 
+# class AreaAdmin(admin.ModelAdmin):
+#     list_display = ('id', 'title', 'name', 'parent', 'level')
+#
+#
+# admin.site.register(Area, AreaAdmin)
 admin.site.register(BlogPost, BlogPostAdmin)
 admin.site.register(BlogCategory, BlogCategoryAdmin)

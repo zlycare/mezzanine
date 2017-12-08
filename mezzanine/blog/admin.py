@@ -64,7 +64,6 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
             # 修改文章
             if request.user.has_perm('blog.edit_operational_fields'):
                 self.fieldsets = self.manage_fieldsets
-                self.readonly_fields = ('_meta_title')
             else:
                 self.fieldsets = self.fieldsets_original
                 self.readonly_fields = ('_meta_title', 'slug', 'publish_date','expiry_date')
@@ -72,7 +71,6 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
             # 新增文章
             if request.user.has_perm('blog.edit_operational_fields'):
                 self.fieldsets = self.manage_fieldsets
-                self.readonly_fields = ('_meta_title')
             else:
                 self.fieldsets = self.addnewblog_fieldsets
                 self.readonly_fields = ('publish_date','expiry_date')

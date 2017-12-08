@@ -37,7 +37,7 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
     Admin class for blog posts.
     """
 
-    fieldsets = blogpost_fieldsets
+    fieldsets = fieldsets_original = blogpost_fieldsets
     list_display = blogpost_list_display
     list_filter = blogpost_list_filter
     filter_horizontal = ("categories", "areas", "content_categories","form_categories" )
@@ -49,6 +49,7 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
         "classes": ("collapse-open",)
     })]
     manage_fieldsets = fieldsets + addon_fieldsets
+    addnewblog_fieldsets = fieldsets[:-1]
 
     def save_form(self, request, form, change):
         """
@@ -60,14 +61,22 @@ class BlogPostAdmin(TweetableAdminMixin, DisplayableAdmin, OwnableAdmin):
 
     def get_form(self, request, obj=None, *args, **kwargs):
         if obj:
+            # 修改文章
             if request.user.has_perm('blog.edit_operational_fields'):
-
                 self.fieldsets = self.manage_fieldsets
-                self.readonly_fields = ()
+                self.readonly_fields = ('_meta_title')
             else:
+                self.fieldsets = self.fieldsets_original
                 self.readonly_fields = ('_meta_title', 'slug', 'publish_date','expiry_date')
         else:
-            self.fieldsets = ()
+            # 新增文章
+            if request.user.has_perm('blog.edit_operational_fields'):
+                self.fieldsets = self.manage_fieldsets
+                self.readonly_fields = ('_meta_title')
+            else:
+                self.fieldsets = self.addnewblog_fieldsets
+                self.readonly_fields = ('publish_date','expiry_date')
+
         form = super(BlogPostAdmin, self).get_form(request, *args, **kwargs)
         form.request = request
         return form

@@ -161,16 +161,16 @@ class DisplayableAdmin(BaseTranslationModelAdmin):
         (None, {
             "fields": ["title", "status", ("publish_date", "expiry_date")],
         }),
+        (_("推广相关"), {
+            "fields": ["areas"],
+            "classes": ("collapse-open",)
+        }),
         (_("Meta data"), {
             "fields": ["_meta_title", "slug",
                        ("description", "gen_description"),
                        #("keywords", "gen_keywords"), "in_sitemap"],
                        "keywords", "in_sitemap"],
             "classes": ("collapse-open",)
-        }),
-        (_("推广相关"), {
-            "fields": ["areas"],
-            "classes": ("collapse-closed",)
         }),
     )
 

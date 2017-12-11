@@ -6,7 +6,7 @@ from copy import deepcopy
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from mezzanine.blog.models import BlogPost, BlogCategory, Area
+from mezzanine.blog.models import BlogPost, BlogCategory, Area, BlogContentCategory, BlogFormCategory
 from mezzanine.conf import settings
 from mezzanine.core.admin import (DisplayableAdmin, OwnableAdmin,
                                   BaseTranslationModelAdmin)
@@ -120,6 +120,29 @@ class BlogCategoryAdmin(BaseTranslationModelAdmin):
                 return True
         return False
 
+class BlogContentCategoryAdmin(BaseTranslationModelAdmin):
+    fieldsets = ((None, {"fields": ("title",)}),)
+
+    def has_module_permission(self, request):
+        """
+        Hide from the admin menu unless explicitly set in ``ADMIN_MENU_ORDER``.
+        """
+        for (name, items) in settings.ADMIN_MENU_ORDER:
+            if "blog.BlogContentCategory" in items:
+                return True
+        return False
+
+class BlogFormCategoryAdmin(BaseTranslationModelAdmin):
+    fieldsets = ((None, {"fields": ("title",)}),)
+
+    def has_module_permission(self, request):
+        """
+        Hide from the admin menu unless explicitly set in ``ADMIN_MENU_ORDER``.
+        """
+        for (name, items) in settings.ADMIN_MENU_ORDER:
+            if "blog.BlogFormCategory" in items:
+                return True
+        return False
 
 # class AreaAdmin(admin.ModelAdmin):
 #     list_display = ('id', 'title', 'name', 'parent', 'level')
@@ -128,3 +151,5 @@ class BlogCategoryAdmin(BaseTranslationModelAdmin):
 # admin.site.register(Area, AreaAdmin)
 admin.site.register(BlogPost, BlogPostAdmin)
 admin.site.register(BlogCategory, BlogCategoryAdmin)
+admin.site.register(BlogContentCategory, BlogContentCategoryAdmin)
+admin.site.register(BlogFormCategory, BlogFormCategoryAdmin)
